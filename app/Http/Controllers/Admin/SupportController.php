@@ -6,86 +6,61 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateSupport;
 use Illuminate\Http\Request;
 use App\Models\Support;
+use App\Services\SupportService;
 
 class SupportController extends Controller
 {
-    /**
-     * Listagem dos Supportes criados
-     *
-     * @param Support $support
-     * @return void
-     */
-    public function index(Support $support)
+    public function __construct(
+        protected SupportService $service
+    )
     {
-        $supports = $support->all();
+        
+    }
+
+    
+    public function index (Request $request)
+    {
+        $supports = $this->service->getAll($request->filter);
 
         return view('admin.supports.index', compact('supports'));
     }
 
-    /**
-     * Exibição de um suporte específico
-     * 
-     * @param string|integer $id
-     */
-    public function show(string | int $id)
+    
+    public function show(string $id)
     {
-        if(!$support = Support::find($id)) {
+        if(!$support = $this->service->findOne($id)) {
             return back();
         }
 
         return view('admin.supports.show', compact('support'));
     }
 
-    /**
-     * Exibição da view de criação de Suporte
-     *
-     * @return void
-     */
+    
     public function create()
     {
         return view('admin.supports.create');
     }
 
-    /**
-     * Criação de um novo Suporte
-     *
-     * @param StoreUpdateSupport $r
-     * @param Support $s
-     * @return void
-     */
-    public function store(StoreUpdateSupport $r, Support $s) {
-        $data = $r->validated();
-        $data['status'] = 'a';
-
-        $s->create($data);
+    
+    public function store(StoreUpdateSupport $r, Support $s) 
+    {
+        $this->service->new(); 
+        
         
         return redirect(route('supports.index'));
     }
 
-    /**
-     * Exibiçõa da view de edição do Suporte
-     *
-     * @param Support $s
-     * @param string|integer $id
-     * @return void
-     */
-    public function edit(Support $s, string|int $id)
+    
+    public function edit(string $id)
     {
-        if(!$support = $s->where('id', '=', $id)->first()) {
+        if(!$support = $this->service->findOne($id)) {
             return back();
         }
 
         return view('admin.supports.edit', compact('support'));
     }
 
-    /**
-     * Atualização do Support
-     *
-     * @param StoreUpdateSupport $r
-     * @param Support $s
-     * @param string|integer $id
-     * @return void
-     */
+    
     public function update(StoreUpdateSupport $r, Support $s, string|int $id)
     {   
         if(!$support = $s->where('id', '=', $id)->first()) {
@@ -97,20 +72,11 @@ class SupportController extends Controller
         return redirect(route('supports.show', $support->id));
     }
 
-    /**
-     * Exclusão de um Suporte selecionado
-     *
-     * @param Support $s
-     * @param string|integer $id
-     * @return void
-     */
-    public function destroy(Support $s, string|int $id)
+    
+    public function destroy(string $id)
     {
-        if(!$support = $s->find($id)) {
-            return back();
-        }
-
-        $support->delete();
+       
+        $this->service->delete($id);
 
         return redirect(route('supports.index'));
 
