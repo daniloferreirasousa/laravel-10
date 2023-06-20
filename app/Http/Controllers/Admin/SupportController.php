@@ -54,7 +54,7 @@ class SupportController extends Controller
      * @return void
      */
     public function store(StoreUpdateSupport $r, Support $s) {
-        $data = $r->only(['subject', 'body']);
+        $data = $r->validated();
         $data['status'] = 'a';
 
         $s->create($data);
@@ -92,9 +92,7 @@ class SupportController extends Controller
             return back();
         }
 
-        $support->update($r->only([
-            'subject', 'body'
-        ]));
+        $support->update($r->validated());
 
         return redirect(route('supports.show', $support->id));
     }
