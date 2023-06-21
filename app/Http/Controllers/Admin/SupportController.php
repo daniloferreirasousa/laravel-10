@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreUpdateSupport;
+use App\Http\Requests\{StoreUpdateSupport};
 use Illuminate\Http\Request;
 use App\Models\Support;
 use App\Services\SupportService;
@@ -12,16 +12,17 @@ class SupportController extends Controller
 {
     public function __construct(
         protected SupportService $service
-    )
-    {
-        
-    }
+    ) {}
 
     
     public function index (Request $request)
     {
-        $supports = $this->service->getAll($request->filter);
-
+        $supports = $this->service->paginate(
+            page: $request->get('page', 1),
+            totalPerPage: $request->get('per_page', 15),
+            filter: $request->filter, 
+        );
+        // dd($supports);
         return view('admin.supports.index', compact('supports'));
     }
 
@@ -44,8 +45,7 @@ class SupportController extends Controller
     
     public function store(StoreUpdateSupport $r, Support $s) 
     {
-        $this->service->new(); 
-        
+        $this->service->new($r->validated()); 
         
         return redirect(route('supports.index'));
     }
