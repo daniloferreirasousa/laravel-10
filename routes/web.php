@@ -3,6 +3,11 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Admin\SupportController;
+use App\Enums\SupportStatus;
+
+Route::get('/test', function () {
+    dd(array_column(SupportStatus::cases(), 'name'));
+});
 
 Route::get('/supports', [SupportController::class, 'index'])->name('supports.index');
 Route::get('/supports/create', [SupportController::class, 'create'])->name('supports.create');
