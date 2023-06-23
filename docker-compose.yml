@@ -4,6 +4,9 @@ services:
     # image project
     app:
         build:
+            args:
+                user: ${USER}
+                uid: ${UID}
             context: .
             dockerfile: Dockerfile
         restart: unless-stopped
@@ -35,8 +38,8 @@ services:
         environment:
             MYSQL_DATABASE: ${DB_DATABASE:-laravel}
             MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-root}
-            MYSQL_PASSWORD: ${DB_PASSWORD:-userpass}
-            MYSQL_USER: ${DB_USERNAME:-username}
+            MYSQL_PASSWORD: ${DB_PASSWORD:-root}
+            MYSQL_USER: ${DB_USERNAME:-root}
         volumes:
             - ./.docker/mysql/dbdata:/var/lib/mysql
         ports:
