@@ -9,7 +9,7 @@ use App\DTO\{
 use App\Repositories\{SupportRepositoryInterface};
 use stdClass;
 
-class SupportService 
+class SupportService
 {
     public function __construct(
         protected SupportRepositoryInterface $repository

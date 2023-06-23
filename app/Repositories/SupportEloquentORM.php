@@ -19,7 +19,6 @@ class SupportEloquentORM implements SupportRepositoryInterface
         protected Support $model
     ) { }
 
-
     public function paginate(int $page = 1, int $totalPerPage = 15, string $filter = null): PaginationInterface
     {
         $result = $this->model
@@ -31,7 +30,6 @@ class SupportEloquentORM implements SupportRepositoryInterface
                         })
                         ->paginate($totalPerPage, ['*'], 'page', $page);
 
-        dd((new PaginationPresenter($result))->items());
         return new PaginationPresenter($result);
     }
 

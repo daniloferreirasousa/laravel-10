@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\DTO\{
+    CreateSupportDTO,
+    UpdateSupportDTO
+};
 use App\Http\Controllers\Controller;
 use App\Http\Requests\{StoreUpdateSupport};
 use Illuminate\Http\Request;
@@ -14,19 +18,21 @@ class SupportController extends Controller
         protected SupportService $service
     ) {}
 
-    
+
     public function index (Request $request)
     {
         $supports = $this->service->paginate(
             page: $request->get('page', 1),
-            totalPerPage: $request->get('per_page', 15),
-            filter: $request->filter, 
+            totalPerPage: $request->get('per_page', 1),
+            filter: $request->filter,
         );
-        // dd($supports);
-        return view('admin.supports.index', compact('supports'));
+
+        $filters = ['filter' => $request->get('filter', '')];
+
+        return view('admin.supports.index', compact('supports', 'filters'));
     }
 
-    
+
     public function show(string $id)
     {
         if(!$support = $this->service->findOne($id)) {
@@ -36,21 +42,23 @@ class SupportController extends Controller
         return view('admin.supports.show', compact('support'));
     }
 
-    
+
     public function create()
     {
         return view('admin.supports.create');
     }
 
-    
-    public function store(StoreUpdateSupport $r, Support $s) 
+
+    public function store(StoreUpdateSupport $r, Support $s)
     {
-        $this->service->new($r->validated()); 
-        
+        $this->service->new(
+            CreateSupportDTO::makeFromRequest($r)
+        );
+
         return redirect(route('supports.index'));
     }
 
-    
+
     public function edit(string $id)
     {
         if(!$support = $this->service->findOne($id)) {
@@ -60,9 +68,9 @@ class SupportController extends Controller
         return view('admin.supports.edit', compact('support'));
     }
 
-    
+
     public function update(StoreUpdateSupport $r, Support $s, string|int $id)
-    {   
+    {
         if(!$support = $s->where('id', '=', $id)->first()) {
             return back();
         }
@@ -72,10 +80,10 @@ class SupportController extends Controller
         return redirect(route('supports.show', $support->id));
     }
 
-    
+
     public function destroy(string $id)
     {
-       
+
         $this->service->delete($id);
 
         return redirect(route('supports.index'));

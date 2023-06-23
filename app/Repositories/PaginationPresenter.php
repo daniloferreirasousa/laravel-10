@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use Illuminate\Pagination\LengthAwarePaginator;
+use stdClass;
 
 class PaginationPresenter implements PaginationInterface
 {
@@ -41,7 +42,7 @@ class PaginationPresenter implements PaginationInterface
 
     public function isLastPage(): bool
     {
-        return $this->paginator->currentPage === $this->paginator->lastPage();
+        return $this->paginator->currentPage() === $this->paginator->lastPage();
     }
 
     public function currentPage(): int
