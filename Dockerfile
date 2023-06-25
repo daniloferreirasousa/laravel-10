@@ -1,8 +1,8 @@
 FROM php:8.1-fpm
 
-# set your user name, ex: user=bernardo
-ARG user=danilo
-ARG uid=1000
+# set user name
+ARG user
+ARG uid
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
@@ -37,6 +37,6 @@ RUN pecl install -o -f redis \
 WORKDIR /var/www
 
 # Copy custom configurations PHP
-COPY docker/php/custom.ini /usr/local/etc/php/conf.d/custom.ini
+COPY ./docker/php/custom.ini /usr/local/etc/php/conf.d/custom.ini
 
 USER $user

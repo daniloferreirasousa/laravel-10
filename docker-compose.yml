@@ -5,8 +5,8 @@ services:
     app:
         build:
             args:
-                user: ${USER}
-                uid: ${UID}
+                user: ${APP_USER}
+                uid: ${APP_UID}
             context: .
             dockerfile: Dockerfile
         restart: unless-stopped

@@ -7,7 +7,7 @@ use App\Repositories\{
     PaginationInterface
 };
 use stdClass;
-use App\DTO\{
+use App\DTO\Supports\{
     CreateSupportDTO,
     UpdateSupportDTO
 };
