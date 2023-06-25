@@ -12,7 +12,7 @@ class PaginationPresenter implements PaginationInterface
      *
      * @var stdClass[]
      */
-    private array $items;
+    protected array $items;
 
     public function __construct(
         protected LengthAwarePaginator $paginator,

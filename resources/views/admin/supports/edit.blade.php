@@ -6,7 +6,7 @@
     @csrf
     @method('PUT')
 
-    @include('admin.supports.psrtials.form', [
+    @include('admin.supports.partials.form', [
         'support' => $support
     ])
 </form>

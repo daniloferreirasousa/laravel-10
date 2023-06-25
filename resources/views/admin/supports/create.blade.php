@@ -6,5 +6,5 @@
     @csrf
     @method('POST')
 
-    @include('admin.supports.psrtials.form')
-</form>
+    @include('admin.supports.partials.form')
+</form>    
