@@ -11,6 +11,7 @@ use App\DTO\Supports\{
 };
 use App\Http\Requests\StoreUpdateSupport;
 use App\Http\Resources\SupportResource;
+use App\Adapters\ApiAdapter;
 
 class SupportController extends Controller
 {
@@ -29,17 +30,7 @@ class SupportController extends Controller
             filter: $request->filter,
         );
 
-        return SupportResource::collection($supports->items())
-                                    ->additional([
-                                        'meta' => [
-                                            'total' => $supports->total(),
-                                            'is_first_page' => $supports->isFirstPage(),
-                                            'is_last_page' => $supports->isLastPage(),
-                                            'current_page' => $supports->currentPage(),
-                                            'next_page' => $supports->getNumberNextPage(),
-                                            'previus_page' => $supports->getNumberPreviusPage(),
-                                        ]
-                                    ]);
+        return ApiAdapter::toJson($supports);
     }
 
     /**
