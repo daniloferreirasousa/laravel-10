@@ -23,7 +23,7 @@ class SupportController extends Controller
     {
         $supports = $this->service->paginate(
             page: $request->get('page', 1),
-            totalPerPage: $request->get('per_page', 1),
+            totalPerPage: $request->get('per_page', 10),
             filter: $request->filter,
         );
 
@@ -55,7 +55,9 @@ class SupportController extends Controller
             CreateSupportDTO::makeFromRequest($r)
         );
 
-        return redirect(route('supports.index'));
+        return redirect()
+                ->route('supports.index')
+                ->with('message', 'Cadastrado com Sucesso!');
     }
 
 
@@ -77,7 +79,9 @@ class SupportController extends Controller
 
         $support->update($r->validated());
 
-        return redirect(route('supports.show', $support->id));
+        return redirect()
+                    ->route('supports.index')
+                    ->with('messasge', 'Atualizado com Sucesso!');
     }
 
 

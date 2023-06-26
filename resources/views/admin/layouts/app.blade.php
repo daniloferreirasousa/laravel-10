@@ -15,12 +15,10 @@
         </div>
 
         <div class="content">
+            <x-message/>
             @yield('content')
         </div>
 
-        <footer>
-            #default footer
-        </footer>
     </section>
 
 </body>

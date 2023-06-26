@@ -1,10 +1,16 @@
-<h1>Nova Dúvida</h1>
+@extends('admin.layouts.app')
 
-<x-alert/>
+@section('title', 'Criar Novo Tópico')
 
-<form action="{{ route('supports.store') }}" method="POST">
-    @csrf
-    @method('POST')
+@section('header')
+    <h1 class="text-lg text-black-500">Cadastrar Dúvida</h1>
+@endsection
 
-    @include('admin.supports.partials.form')
-</form>    
+@section('content')
+    <form action="{{ route('supports.store') }}" method="POST">
+        @csrf
+        @method('POST')
+
+        @include('admin.supports.partials.form')
+    </form>
+@endsection
